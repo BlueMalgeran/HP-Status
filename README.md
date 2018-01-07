@@ -6,4 +6,4 @@ No config file or other thirdsided files are required to make the plugins work!
 # Note:
 When admin / player / VIP is connecting to the server it'll show it up in chat, so welcome messages are included in this plugin.
 ![alt text](https://i.imgur.com/HRLBKE4.png)
-You can delete the lines 17 - 32 if you don't want the "welcome messages".
+# You can delete the lines 17 - 32 if you don't want the "welcome messages".
