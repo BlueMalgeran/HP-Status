@@ -1,11 +1,11 @@
 #include <sourcemod>
 
 public Plugin myinfo = {
-	name = "PlayerDMG",
+	name = "[BLUE]PlayerDMG",
 	author = "Blue Malgeran",
-	description = "Showing your damage to the players.",
-	version = "0.1",
-	url = "http://BlueMalgeran.tk"
+	description = "Shows the damage to a player.",
+	version = "1.0",
+	url = "http://BlueMalgeran.com"
 };
 
 public void OnPluginStart() {
