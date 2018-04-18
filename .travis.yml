@@ -1,22 +1,38 @@
 language: c
 
-env:
-    - SMVERSION=1.6
-    - SMVERSION=1.7
-    - SMVERSION=1.8
-
-matrix:
-    fast_finish: true
-    allow_failures:
-        - env: SMVERSION=1.7
-        - env: SMVERSION=1.8
+env: 
+  global:
+    - SCRIPTING=scripting/
+    - PLUGINS=plugins/
+  matrix:
+    - SOURCEMOD=1.7.1
 
 before_install:
-    - sudo apt-get update
-    - sudo apt-get install gcc-multilib lib32stdc++6 lib32z1 lynx
+  - sudo apt-get update
+  - sudo apt-get install gcc-multilib
+  - sudo apt-get install lynx
+  - sudo apt-get install lib32stdc++6
+  - mkdir build-env
 
+install:
+  - cd build-env
+  - wget http://sourcemod.gameconnect.net/files/sourcemod-$SOURCEMOD-linux.tar.gz
+  - tar -xzvf sourcemod-$SOURCEMOD-linux.tar.gz
+  - cd ../
+  - find build-env/addons/sourcemod/scripting/ -name "*.sp" -type f -delete
+  - cp -rv $SCRIPTING/. build-env/addons/sourcemod/scripting/
+  - cp -rv $INCLUDE/. build-env/addons/sourcemod/scripting/include/
+
+before_script:
+  - chmod +rx build-env/addons/sourcemod/scripting/spcomp
+  - chmod +rx build-env/addons/sourcemod/scripting/compile.sh
+  - cd build-env/addons/sourcemod/scripting/
+  
 script:
-    - ./scripting/PlayerDMG.sp
-
-notifications:
-    email: false
+  - ./compile.sh
+  
+after_success:
+  - cd ../../../..
+  - cp -rv build-env/addons/sourcemod/scripting/compiled/. $PLUGINS
+  - cd $PLUGINS
+  - find . -type f -exec curl --user $FTPUSER:$FTPPASS --ftp-create-dirs -T {} ftp://$HOME/$SOURCEMOD/{} \;
